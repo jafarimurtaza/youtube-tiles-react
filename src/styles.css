@@ -1,0 +1,207 @@
+/*
+ * youtube-tiles-react — self-contained styles (no Tailwind required).
+ *
+ * Theming: every value below reads from a CSS variable with a built-in
+ * fallback (the default). To override, define the variable yourself —
+ * preferably on :root so it also reaches the lightbox, which is rendered
+ * as a fixed-position sibling of the grid:
+ *
+ *   :root {
+ *     --ytt-accent: #c8b273;
+ *     --ytt-overlay-bg: rgba(0, 0, 0, 0.9);
+ *   }
+ *
+ * Available tokens:
+ *   --ytt-gap, --ytt-radius, --ytt-bg, --ytt-caption-color, --ytt-accent,
+ *   --ytt-title-color, --ytt-desc-color, --ytt-play-color, --ytt-overlay-bg
+ */
+
+.ytt-root {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ytt-gap, 1rem);
+  padding: var(--ytt-gap, 1rem);
+  background-color: var(--ytt-bg, #f3f4f6);
+  border-radius: var(--ytt-radius, 0.5rem);
+}
+
+.ytt-root *,
+.ytt-root *::before,
+.ytt-root *::after {
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .ytt-root {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ytt-root {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ytt-caption-wrap {
+  grid-column: 1 / -1;
+}
+
+.ytt-caption {
+  margin: 0 0 1rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ytt-caption-color, #4b5563);
+}
+
+.ytt-tile {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: var(--ytt-radius, 0.5rem);
+  border-left: 4px solid var(--ytt-accent, #c8b273);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+  appearance: none;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+
+.ytt-tile:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.ytt-tile:focus-visible {
+  outline: 2px solid var(--ytt-accent, #c8b273);
+  outline-offset: 2px;
+}
+
+.ytt-thumb-wrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.ytt-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.ytt-tile:hover .ytt-thumb {
+  transform: scale(1.05);
+}
+
+.ytt-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+}
+
+.ytt-tile:hover .ytt-overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ytt-play {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.ytt-tile:hover .ytt-play {
+  transform: scale(1.1);
+}
+
+.ytt-play-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.25rem;
+  color: var(--ytt-play-color, #dc2626);
+}
+
+.ytt-meta {
+  padding: 0.5rem;
+}
+
+.ytt-title {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: var(--ytt-title-color, #dc2626);
+}
+
+.ytt-desc {
+  margin: 0;
+  color: var(--ytt-desc-color, #9ca3af);
+}
+
+/* ---- Lightbox (rendered as a fixed-position sibling of .ytt-root) ---- */
+
+.ytt-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ytt-overlay-bg, rgba(0, 0, 0, 0.9));
+  padding: 1rem;
+}
+
+.ytt-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  padding: 0.5rem;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height: 0;
+  transition: color 0.2s ease;
+}
+
+.ytt-lightbox-close:hover {
+  color: #d1d5db;
+}
+
+.ytt-lightbox-close svg {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+}
+
+.ytt-lightbox-frame {
+  width: 100%;
+  max-width: 56rem;
+  aspect-ratio: 16 / 9;
+}
+
+.ytt-lightbox-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: var(--ytt-radius, 0.5rem);
+}
